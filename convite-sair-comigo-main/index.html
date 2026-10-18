@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Quer sair comigo pra se conhecer? 💕</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #a18cd1 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .card {
+    text-align: center;
+    padding: clamp(1.5rem, 5vw, 3.5rem);
+    background: rgba(255, 255, 255, 0.88);
+    border-radius: 2rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+    max-width: 92vw;
+    width: 100%;
+    max-width: 520px;
+  }
+  .heart {
+    display: inline-block;
+    font-size: clamp(4rem, 16vw, 6rem);
+    animation: pulse 1.2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+  }
+  h1 {
+    font-size: clamp(1.8rem, 6.5vw, 3rem);
+    font-weight: 800;
+    color: #d6336c;
+    margin-top: 0.8rem;
+    line-height: 1.2;
+  }
+  .sub {
+    margin-top: 0.6rem;
+    font-size: clamp(0.9rem, 3vw, 1.1rem);
+    color: #6c757d;
+    font-weight: 600;
+  }
+  .buttons {
+    margin-top: 2.2rem;
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    position: relative;
+  }
+  .btn {
+    font-family: inherit;
+    font-weight: 800;
+    padding: 0.9rem 2.4rem;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1.3rem;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+    color: #fff;
+  }
+  .btn:focus { outline: none; }
+  #sim {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    padding: 1rem 2.6rem;
+  }
+  #sim:hover {
+    transform: scale(1.1);
+    box-shadow: 0 10px 28px rgba(32, 201, 151, 0.5);
+  }
+  #nao {
+    background: linear-gradient(135deg, #ff4d6d, #c9184a);
+    position: fixed;
+    z-index: 10;
+    touch-action: none;
+  }
+  /* Mensagem final */
+  #msg {
+    display: none;
+    text-align: center;
+    padding: clamp(1.5rem, 5vw, 3rem);
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 2rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+    max-width: 92vw;
+    width: 100%;
+    max-width: 520px;
+    animation: pop 0.6s ease;
+  }
+  #msg .big-heart {
+    font-size: clamp(4rem, 16vw, 6rem);
+    display: inline-block;
+    animation: pulse 1s ease-in-out infinite;
+  }
+  #msg h2 {
+    font-size: clamp(1.5rem, 5.5vw, 2.4rem);
+    font-weight: 800;
+    color: #d6336c;
+    margin-top: 1rem;
+    line-height: 1.3;
+  }
+  #msg p {
+    margin-top: 1rem;
+    font-size: clamp(1rem, 3.5vw, 1.3rem);
+    color: #495057;
+    font-weight: 600;
+  }
+  @keyframes pop {
+    0% { transform: scale(0.6); opacity: 0; }
+    80% { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .heart-fall {
+    position: fixed;
+    top: -70px;
+    z-index: 5;
+    pointer-events: none;
+    animation: fall linear forwards;
+  }
+  @keyframes fall {
+    to {
+      transform: translateY(115vh) rotate(360deg);
+      opacity: 0.9;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Card da pergunta -->
+  <div class="card" id="card">
+    <span class="heart">💕</span>
+    <h1>Quer sair comigo pra se conhecer?</h1>
+    <p class="sub">Prometo que vai ser o melhor dia da sua vida 😊</p>
+    <div class="buttons">
+      <button class="btn" id="sim">SIM 💚</button>
+      <button class="btn" id="nao">NÃO ❌</button>
+    </div>
+  </div>
+
+  <!-- Mensagem final -->
+  <div id="msg">
+    <span class="big-heart">💖</span>
+    <h2>Sabia que você ia dizer SIM!</h2>
+    <p>Você me faz muito feliz! 🥰<br>Te espero ansiosamente. 😘💕</p>
+  </div>
+
+<script>
+  const sim = document.getElementById('sim');
+  const nao = document.getElementById('nao');
+  const card = document.getElementById('card');
+  const msg = document.getElementById('msg');
+  let fugas = 0;
+
+  const textos = [
+    'NÃO? 😅', 'Quer mesmo? 😳', 'Tenta de novo 😝',
+    'Eu fujo mesmo 😜', 'SIM é melhor! 💘', 'NÃO vai fugir 🙈',
+    'Desiste 😂', 'O SIM te espera 💚'
+  ];
+
+  function moverNao() {
+    const bw = nao.offsetWidth;
+    const bh = nao.offsetHeight;
+    const maxX = Math.max(10, window.innerWidth - bw - 10);
+    const maxY = Math.max(10, window.innerHeight - bh - 10);
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+    nao.style.left = x + 'px';
+    nao.style.top = y + 'px';
+    fugas++;
+
+    // SIM fica cada vez maior 😄
+    const escala = 1 + fugas * 0.08;
+    sim.style.transform = 'scale(' + escala + ')';
+
+    // NÃO muda de texto e fica menor a cada fuga
+    nao.style.fontSize = Math.max(0.9, 1.3 - fugas * 0.05) + 'rem';
+    nao.textContent = textos[Math.min(fugas - 1, textos.length - 1)];
+  }
+
+  // Desktop: foge quando o mouse chega perto
+  nao.addEventListener('pointerover', moverNao);
+  // Mobile: foge antes do toque acontecer
+  nao.addEventListener('touchstart', function (e) {
+    e.preventDefault();
+    moverNao();
+  }, { passive: false });
+  nao.addEventListener('pointerdown', function (e) {
+    e.preventDefault();
+    moverNao();
+  });
+
+  sim.addEventListener('click', celebrar);
+
+  function celebrar() {
+    card.style.display = 'none';
+    msg.style.display = 'block';
+    for (let i = 0; i < 45; i++) {
+      setTimeout(criarCoracao, i * 70);
+    }
+  }
+
+  function criarCoracao() {
+    const emojis = ['💖', '💕', '💗', '💘', '💝', '🥰', '😍', '💞'];
+    const c = document.createElement('div');
+    c.className = 'heart-fall';
+    c.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    c.style.left = Math.random() * 100 + 'vw';
+    c.style.fontSize = (Math.random() * 1.6 + 1.4) + 'rem';
+    c.style.animationDuration = (Math.random() * 2 + 3) + 's';
+    c.style.animationDelay = Math.random() * 0.6 + 's';
+    document.body.appendChild(c);
+    setTimeout(function () { c.remove(); }, 7000);
+  }
+</script>
+</body>
+</html>
